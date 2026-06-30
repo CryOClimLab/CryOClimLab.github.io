@@ -406,13 +406,13 @@ html.js body::after{                   /* logo on top */
 }
 @keyframes cclCurtain{
   0%   { opacity:1; }
-  64%  { opacity:1; }
+  75%  { opacity:1; }
   100% { opacity:0; visibility:hidden; }
 }
 @keyframes cclLogo{
   0%   { opacity:0; transform:scale(.92); }
-  18%  { opacity:1; transform:scale(1); }
-  64%  { opacity:1; transform:scale(1); }
+  35%  { opacity:1; transform:scale(1); }
+  75%  { opacity:1; transform:scale(1); }
   100% { opacity:0; transform:scale(1.05); visibility:hidden; }
 }
 /* replay the splash when navigating to another page */
