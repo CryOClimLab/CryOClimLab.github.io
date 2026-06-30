@@ -392,7 +392,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.12; font-weigh
    is opaque while still small, so the whole 0.4x -> 1x zoom is visible. */
 html.js body::before{                 /* white backdrop */
   content:""; position:fixed; inset:0; z-index:99998; background:#ffffff;
-  animation: cclCurtainOut 1.8s linear backwars;
+  animation: cclCurtainOut 1.8s linear backwards;
   pointer-events:none;
 }
 html.js body::after{                  /* logo: comes outward from the back */
