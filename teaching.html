@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teaching — CryOClim-Lab</title>
+  <meta name="description" content="Courses taught by Prof. Saurabh Rathore at the Centre for Atmospheric Sciences (CAS), IIT Delhi — including the Science of Climate Change and Air–Sea Interaction." />
+
+  <!-- Social preview -->
+  <meta property="og:title" content="CryOClim-Lab — Teaching" />
+  <meta property="og:description" content="Graduate courses on climate change and air–sea interaction at CAS, IIT Delhi." />
+  <meta property="og:type" content="website" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+  <script>document.documentElement.classList.add('js');</script>
+  <style>
+    /* ===== Teaching page ===== */
+    .teach-intro{ max-width:64ch; color:var(--c-slate); font-size:1.06rem; line-height:1.72; margin:.2rem 0 1.1rem; }
+    .teach-link{ display:inline-flex; align-items:center; gap:.55rem; font-family:var(--font-mono); font-size:.82rem; font-weight:700;
+      color:var(--c-ocean); text-decoration:none; padding:.6rem .95rem; border:1px solid var(--c-line); border-radius:11px; background:#fff;
+      transition:border-color .2s ease, box-shadow .2s ease, transform .15s ease; }
+    .teach-link:hover{ border-color:var(--c-current); box-shadow:0 8px 18px -12px rgba(8,34,48,.4); transform:translateY(-1px); }
+    .teach-link svg{ width:16px; height:16px; flex:0 0 auto; }
+
+    /* --- timeline (gantt) --- */
+    .gantt-label{ font-family:var(--font-mono); font-size:.74rem; letter-spacing:.14em; text-transform:uppercase; color:var(--c-slate); margin:2.8rem 0 .7rem; }
+    .gantt-wrap{ position:relative; margin:0 0 3rem; }
+    .gantt{ background:linear-gradient(180deg,#fff,var(--c-mist)); border:1px solid var(--c-line); border-radius:16px; padding:1.3rem 1.3rem .5rem; margin:0; overflow-x:auto; }
+    .gantt__plot{ position:relative; min-width:440px; }
+    .gantt__grid{ position:absolute; top:0; bottom:0; width:0; border-left:1px dashed var(--c-line); z-index:0; }
+    .gantt__row{ position:relative; height:42px; margin-bottom:.55rem; z-index:1; }
+    .gantt__bar{ position:absolute; top:2px; height:38px; border-radius:10px; display:flex; align-items:center; padding:0 .85rem;
+      color:#fff; font-family:var(--font-mono); font-weight:700; font-size:.8rem; letter-spacing:.02em;
+      box-shadow:0 6px 16px -10px rgba(8,34,48,.55); min-width:66px; overflow:hidden; white-space:nowrap; }
+    .gantt__bar--done{ background:linear-gradient(135deg,var(--c-current),var(--c-deep)); }
+    .gantt__bar--live{ background:linear-gradient(90deg,#1FA98F,#2FBFA0 68%,rgba(47,191,160,.4)); padding-right:1.7rem; }
+    .gantt__bar--live::after{ content:'▸▸'; position:absolute; right:.55rem; opacity:.9; letter-spacing:-3px; }
+    .gantt__axis{ position:relative; min-width:440px; height:24px; border-top:1px solid var(--c-line); margin-top:.15rem; }
+    .gantt__axis span{ position:absolute; top:5px; transform:translateX(-50%); font-family:var(--font-mono); font-size:.72rem; color:var(--c-slate); }
+    .gantt__axis span:first-child{ transform:translateX(0); }
+    .gantt__axis span:last-child{ transform:translateX(-100%); }
+
+    /* --- course cards --- */
+    .tcard{ position:relative; background:#fff; border:1px solid var(--c-line); border-radius:16px;
+      padding:1.6rem 1.7rem 1.7rem 2rem; margin:0 0 1.4rem; overflow:hidden;
+      transition:box-shadow .25s ease, transform .2s ease, border-color .2s ease; }
+    .tcard:hover{ box-shadow:0 18px 40px -24px rgba(8,34,48,.5); transform:translateY(-2px); border-color:var(--c-current); }
+    .tcard::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:5px; }
+    .tcard--done::before{ background:linear-gradient(180deg,var(--c-current),var(--c-deep)); }
+    .tcard--live::before{ background:linear-gradient(180deg,#2FBFA0,#1FA98F); }
+    .tcard__top{ display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; margin-bottom:.75rem; }
+    .tcard__code{ font-family:var(--font-mono); font-weight:700; font-size:.9rem; color:#fff; padding:.32rem .62rem; border-radius:8px; letter-spacing:.02em; flex:0 0 auto; }
+    .tcard--done .tcard__code{ background:var(--c-ocean); }
+    .tcard--live .tcard__code{ background:#1FA98F; }
+    .tcard__title{ font-family:var(--font-display); font-weight:700; font-size:clamp(1.2rem,2.6vw,1.55rem); color:var(--c-ink); margin:0 auto 0 0; letter-spacing:-.01em; }
+    .tstatus{ display:inline-flex; align-items:center; gap:.42rem; font-family:var(--font-mono); font-size:.67rem; font-weight:700;
+      letter-spacing:.05em; text-transform:uppercase; padding:.34rem .64rem; border-radius:999px; white-space:nowrap; flex:0 0 auto; }
+    .tstatus--done{ background:#EEF3F5; color:var(--c-slate); }
+    .tstatus--live{ background:#D8F0DD; color:#2F8F5C; }
+    .tstatus .dot{ width:7px; height:7px; border-radius:50%; background:#2FA98A; box-shadow:0 0 0 0 rgba(47,169,138,.55); animation:tpulse 1.9s ease-out infinite; }
+    @keyframes tpulse{ 0%{ box-shadow:0 0 0 0 rgba(47,169,138,.5); } 70%{ box-shadow:0 0 0 8px rgba(47,169,138,0); } 100%{ box-shadow:0 0 0 0 rgba(47,169,138,0); } }
+    .tcard__meta{ display:flex; flex-wrap:wrap; gap:.5rem 1.4rem; margin:0 0 1rem; }
+    .tcard__metaitem{ display:inline-flex; align-items:center; gap:.42rem; font-family:var(--font-mono); font-size:.78rem; color:var(--c-slate); }
+    .tcard__metaitem svg{ width:15px; height:15px; color:var(--c-current); flex:0 0 auto; }
+    .tcard__metaitem b{ color:var(--c-ocean); font-weight:700; }
+    .tcard__desc{ color:var(--c-ink); line-height:1.68; font-size:1rem; margin:0 0 1.15rem; }
+    .tchips{ display:flex; flex-wrap:wrap; gap:.5rem; }
+    .tchip{ font-family:var(--font-body); font-size:.77rem; color:var(--c-ocean); background:var(--c-foam); border:1px solid var(--c-line);
+      border-radius:999px; padding:.34rem .74rem; transition:background .18s ease, border-color .18s ease, color .18s ease; }
+    .tcard:hover .tchip{ border-color:#CDE4EA; }
+
+    @media (prefers-reduced-motion: reduce){ .tstatus .dot{ animation:none; } }
+    @media (max-width:600px){
+      .gantt-wrap::after{ content:''; position:absolute; top:1px; right:1px; bottom:1px; width:42px; background:linear-gradient(90deg, rgba(247,251,252,0), rgba(247,251,252,.94)); pointer-events:none; border-radius:0 15px 15px 0; }
+      .tcard{ padding:1.35rem 1.2rem 1.45rem 1.55rem; }
+      .tcard__title{ margin:0; flex:1 1 100%; order:2; }
+      .tcard__code{ order:1; }
+      .tstatus{ order:3; }
+    }
+  </style>
+  <link rel="icon" type="image/png" href="main-logo/cryoclim-emblem.png" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a class="brand" href="index.html" aria-label="CryOClim-Lab home">
+        <span class="brand__mark" aria-hidden="true">
+          <img class="brand__img" src="main-logo/cryoclim-emblem.png" alt="" style="height:38px;width:auto;display:block">
+        </span>
+        <span class="brand__text">Cry<span style="color:#DC143C">O</span>Clim-Lab</span>
+      </a>
+
+      <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav__menu" id="navMenu" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="research.html">Research</a>
+        <a href="people.html">People</a>
+        <a href="publications.html">Publications</a>
+        <a href="teaching.html" class="is-active" aria-current="page">Teaching</a>
+        <a href="projects.html">Projects</a>
+        <a href="contact.html">Contact</a>
+        <a href="join.html" class="nav__cta">Join us</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ TEACHING ============ -->
+    <section class="section" id="teaching">
+      <div class="container">
+        <div class="section__head reveal">
+          <p class="eyebrow">Teaching</p>
+          <h2 class="section__title">Courses</h2>
+        </div>
+
+        <!-- intro -->
+        <div class="reveal">
+          <p class="teach-intro">Courses I teach at the Centre for Atmospheric Sciences (CAS), IIT Delhi. Please sign up for a course on the ERP — and if you have any questions about course topics, feel free to visit my office.</p>
+          <a class="teach-link" href="https://cas.iitd.ac.in/public/storage/uploads/CAS_CourseOfStudy_23-24_1689926406.pdf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+            View the full CAS course of study (PDF)
+          </a>
+        </div>
+
+        <!-- timeline -->
+        <p class="gantt-label reveal">Course timeline · 2024 – present</p>
+        <div class="gantt-wrap reveal">
+          <div class="gantt" aria-hidden="true">
+            <div class="gantt__plot">
+              <span class="gantt__grid" style="left:0%"></span>
+              <span class="gantt__grid" style="left:33.33%"></span>
+              <span class="gantt__grid" style="left:66.67%"></span>
+              <span class="gantt__grid" style="left:100%"></span>
+              <div class="gantt__row">
+                <div class="gantt__bar gantt__bar--done" style="left:0%;width:77.8%"><span>ASL736</span></div>
+              </div>
+              <div class="gantt__row">
+                <div class="gantt__bar gantt__bar--live" style="left:83.3%;right:0"><span>ASL762</span></div>
+              </div>
+            </div>
+            <div class="gantt__axis">
+              <span style="left:0%">2024</span>
+              <span style="left:33.33%">2025</span>
+              <span style="left:66.67%">2026</span>
+              <span style="left:100%">2027</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ASL736 -->
+        <article class="tcard tcard--done reveal">
+          <div class="tcard__top">
+            <span class="tcard__code">ASL736</span>
+            <h3 class="tcard__title">Science of Climate Change</h3>
+            <span class="tstatus tstatus--done">Completed</span>
+          </div>
+          <div class="tcard__meta">
+            <span class="tcard__metaitem">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>
+              Offered&nbsp;<b>Jan 2024 – May 2026</b>
+            </span>
+            <span class="tcard__metaitem">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 9h16M4 15h16M9 4v16M15 4v16"/></svg>
+              Credits&nbsp;<b>3–0–0</b>
+            </span>
+            <span class="tcard__metaitem">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+              CAS, IIT Delhi
+            </span>
+          </div>
+          <p class="tcard__desc">Description of the climate system (general circulation, hydrological cycle, carbon cycle). The natural greenhouse effect and the effect of trace gases and aerosols. Forcings (natural and anthropogenic), fast and slow feedbacks, equilibrium climate sensitivity, and transient climate response. Climates of the past (ice ages, proxy records, abrupt climate change, the instrumental record of climate). Climate variability and time-scales — MJO, ENSO, PDO, and Milankovitch cycles. Modelling climate: simple energy-balance models and coupled climate models. Natural and anthropogenic climate change, and future climate projections.</p>
+          <div class="tchips">
+            <span class="tchip">General circulation</span>
+            <span class="tchip">Carbon cycle</span>
+            <span class="tchip">Greenhouse effect</span>
+            <span class="tchip">Climate feedbacks</span>
+            <span class="tchip">Climate sensitivity</span>
+            <span class="tchip">Palaeoclimate</span>
+            <span class="tchip">MJO · ENSO · PDO</span>
+            <span class="tchip">Milankovitch cycles</span>
+            <span class="tchip">Climate models</span>
+            <span class="tchip">Future projections</span>
+          </div>
+        </article>
+
+        <!-- ASL762 -->
+        <article class="tcard tcard--live reveal">
+          <div class="tcard__top">
+            <span class="tcard__code">ASL762</span>
+            <h3 class="tcard__title">Air–Sea Interaction</h3>
+            <span class="tstatus tstatus--live"><span class="dot"></span>Ongoing</span>
+          </div>
+          <div class="tcard__meta">
+            <span class="tcard__metaitem">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>
+              Offered&nbsp;<b>July 2026 – Ongoing</b>
+            </span>
+            <span class="tcard__metaitem">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 9h16M4 15h16M9 4v16M15 4v16"/></svg>
+              Credits&nbsp;<b>3–0–0</b>
+            </span>
+            <span class="tcard__metaitem">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+              CAS, IIT Delhi
+            </span>
+          </div>
+          <p class="tcard__desc">State of matter near the air–sea interface, the marine boundary layer, and transfer properties between atmosphere and ocean. Solar and terrestrial radiation, the sea-surface radiation budget, and surface wind waves. Air–sea interaction processes illustrated through ENSO, hurricanes, and the Indian monsoon. Turbulent transfer near the interface, bubbles and spray, and the transport of trace gases across the interface. Latent, sensible, and momentum fluxes in the surface boundary layer over the sea, bulk parameterizations, large-scale forcing by sea-surface buoyancy fluxes, and the spatio-temporal variability of ocean-surface fluxes with reference to the Indian Ocean.</p>
+          <div class="tchips">
+            <span class="tchip">Air–sea interface</span>
+            <span class="tchip">Marine boundary layer</span>
+            <span class="tchip">Radiation budget</span>
+            <span class="tchip">Wind waves</span>
+            <span class="tchip">ENSO</span>
+            <span class="tchip">Tropical cyclones</span>
+            <span class="tchip">Indian monsoon</span>
+            <span class="tchip">Turbulent fluxes</span>
+            <span class="tchip">Bulk parameterizations</span>
+            <span class="tchip">Indian Ocean</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span style="display:flex;align-items:center;gap:11px;">
+          <img src="main-logo/cryoclim-emblem.png" alt="" style="height:36px;width:auto;display:block;flex:0 0 auto">
+          <span class="brand__text">Cry<span style="color:#DC143C">O</span>Clim-Lab</span>
+        </span>
+        <p>Centre for Atmospheric Sciences, IIT Delhi</p>
+      </div>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="index.html">Home</a>
+        <a href="research.html">Research</a>
+        <a href="people.html">People</a>
+        <a href="publications.html">Publications</a>
+        <a href="join.html">Join us</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+    <div class="container footer__legal">
+      <p>&copy; <span id="year">2025</span> CryOClim-Lab. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
